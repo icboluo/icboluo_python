@@ -29,7 +29,7 @@ def click_chinese_in_window(target_text):
         if text == target_text:
             x = left + data["left"][i] + data["width"][i] // 2
             y = top + data["top"][i] + data["height"][i] // 2
-            pyautogui.click(x + 20, y)
+            pyautogui.click(x, y)
             return True
     return False
 
@@ -64,11 +64,5 @@ def find_win():
 
 
 if __name__ == "__main__":
-    # 示例：查找并点击"保存"按钮
-    target_text = "士兵群"
-    skill_smyj = "舍命一击"
-    skill_lphs = "力劈华山"
-    skill_grjt = "固若金汤"
-
     # 执行查找点击（可设置尝试次数）
-    click_chinese_in_window(target_text)
+    click_chinese_in_window('虎')

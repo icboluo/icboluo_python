@@ -2,7 +2,7 @@ import time
 
 import pyautogui
 
-from Tool import find, wait_click, wait_click_sleep
+from Tool import find, wait_click, wait_click_sleep, success_return, treat, wait_double_click_sleep
 
 
 def attack_3time():
@@ -40,33 +40,6 @@ def do_skill(skill_path):
     return True
 
 
-def wait_double_click_sleep(template1_path, template2_path, threshold=0.6, xs=0):
-    while True:
-        x, y = find(template1_path, threshold)
-        if x != -1:
-            pyautogui.click(x + xs, y)
-            time.sleep(1)
-            target = template1_path.split('/')[1].split('.')[0]
-            print(f'点击移动到-> {target}')
-            return
-        x1, y1 = find(template2_path, threshold)
-        if x1 != -1:
-            pyautogui.click(x1, y1)
-        time.sleep(1)
-
-
-def success_return():
-    x1, y1 = find('胜利/胜利下一条.png', 0.5)
-    if x1 != -1:
-        pyautogui.click(x1, y1)
-    x4, y4 = find('胜利/胜利关闭.png', 0.5)
-    if x4 != -1:
-        pyautogui.click(x4, y4)
-    x2, y2 = find('胜利/胜利返回.png', 0.5)
-    if x2 != -1:
-        pyautogui.click(x2, y2)
-
-
 def move():
     find('主界面/移动.png')
     wait_click_sleep('主界面/移动.png')
@@ -90,7 +63,7 @@ def move():
 def fight():
     x, y = find('怪物/黄巾士兵.png')
     print(x, y)
-    wait_double_click_sleep('怪物/黄巾士兵长.png', '主界面/人物.png', 0.5, 130)
+    wait_double_click_sleep('怪物/黄巾士兵长.png', '主界面/人物.png', 0.5)
     if not do_skill('战斗/舍命一击.png'):
         return
     attack_3time()
@@ -108,24 +81,6 @@ def fight():
             return
         time.sleep(2)
 
-
-def treat():
-    wait_click_sleep('主界面/功能.png')
-    wait_click_sleep('功能/物品.png')
-    wait_click_sleep('功能/快速恢复.png')
-    while True:
-        x, y = find('功能/确定.png')
-        if x != -1:
-            pyautogui.click(x, y)
-            time.sleep(1)
-        x1, y1 = find('功能/返回.png')
-        if x1 != -1:
-            pyautogui.click(x1, y1)
-            time.sleep(1)
-        x2, y2 = find('主界面/人物.png')
-        if x2 != -1:
-            break
-        time.sleep(1)
 
 
 if __name__ == "__main__":
