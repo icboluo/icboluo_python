@@ -1,18 +1,17 @@
 import time
-from os import times
 
 import cv2
-from pyautogui import click
 
-from Tool import find_template, read_win_popup_safe, wait_click_sleep, wait_double_find_sleep, attack_sleep, \
-    success_return, find_match, find, click_global, find_all_matches, win_h
+from Tool import find_template, read_win_popup_safe, wait_click_sleep, wait_double_find_sleep, attack_row_sleep, \
+    success_return, find_match_max_val, find, click_global, find_all_matches
+from 回血 import chu_zhao, bu_xue1_or_attack, bu_xue2_or_attack
 
 
 def ylj(template1_path, template2_path, threshold=0.6, print_msg=True):
     screen_gray = read_win_popup_safe()
 
-    a1 = find_match(template1_path)
-    a2 = find_match(template2_path)
+    a1 = find_match_max_val(template1_path)
+    a2 = find_match_max_val(template2_path)
     if a1 < threshold or a1 < a2:
         return -1, -1
 
@@ -41,19 +40,38 @@ def ylj(template1_path, template2_path, threshold=0.6, print_msg=True):
 def zhao_lv_bu():
     wait_click_sleep('战斗/招将.png')
     time.sleep(1)
-    attack_sleep1(2)
+    fu_jiang_chu_zhan(2)
     wait_click_sleep('战斗/招将.png')
     time.sleep(1)
-    attack_sleep1(1)
-    wait_click_sleep('战斗/物品.png')
-    wait_click_sleep('战斗/加2000.png')
-    wait_click_sleep('战斗/红色.png', 0.5)
+    fu_jiang_chu_zhan(1)
+    bu_xue1_or_attack()
     wait_click_sleep('战斗/招将.png')
     time.sleep(1)
-    attack_sleep1(1)
+    fu_jiang_chu_zhan(1)
+    bu_xue2_or_attack()
+    chu_zhao(3)
 
 
-def attack_sleep1(row):
+def treat():
+    while True:
+        for i in range(1, 5):
+            chu_zhao(i)
+        while True:
+            time.sleep(10)
+            x, y = find('战斗/攻击.png')
+            if x != -1:
+                break
+            success_return()
+            x, y = find('主界面/主界面.png')
+            if x != -1:
+                break
+            time.sleep(1)
+        x, y = find('主界面/主界面.png')
+        if x != -1:
+            return
+
+
+def fu_jiang_chu_zhan(row):
     all_find = find_all_matches('副将/出战.png', 0.7)
     a, b = all_find[row - 1]
     click_global(a, b)
@@ -64,7 +82,7 @@ if __name__ == '__main__':
     while True:
         wait_click_sleep('主界面/人物.png')
         wait_double_find_sleep('npc/战斗.png', '主界面/人物.png')
-        attack_sleep(2)
+        attack_row_sleep(2)
         time.sleep(3)
         x, y = ylj('刷体/羽林军6.png', '刷体/羽林军4.png')
         if x != -1:
@@ -75,9 +93,9 @@ if __name__ == '__main__':
                 if len(all_match) >= 4:
                     wait_click_sleep('战斗/手动出招.png')
                     zhao_lv_bu()
+                    treat()
                     break
                 time.sleep(1)
-            break
         else:
             while True:
                 x3, y3 = find('战斗/逃跑.png')

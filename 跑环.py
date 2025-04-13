@@ -1,7 +1,7 @@
 import time
 
-from Tool import wait_click_sleep, one_row_click_end, next_step, find_all_matches, click_global, success_return, find, \
-    treat, attack_sleep
+from Tool import wait_click_sleep, one_row_click_end, next_step, success_return, find, \
+    attack_row_sleep
 
 
 # 许昌--->下邳
@@ -37,7 +37,7 @@ def da_guai():
     wait_click_sleep('主界面/人物.png')
     for i in range(10):
         print(f'第{i + 1}次刷图')
-        attack_sleep(4)
+        attack_row_sleep(4)
         time.sleep(1)
         wait_click_sleep('战斗/自动出招.png')
         while True:

@@ -1,15 +1,22 @@
 import time
-from datetime import datetime
 
 import cv2
 import numpy as np
 import pyautogui
 import pygetwindow as gw
+import win32api
+import win32con
+import win32gui
 
 win_l = 1
 win_t = 1
 win_w = 1
 win_h = 1
+
+
+def find_zuo_biao():
+    global win_l, win_t, win_w, win_h
+    return win_l, win_t, win_w, win_h
 
 
 # 发现模版
@@ -77,7 +84,7 @@ def find(template_path, threshold=0.6, print_msg=True):
         return -1, -1
 
 
-def find_match(template_path):
+def find_match_max_val(template_path):
     screen_gray = read_win_popup_safe()
 
     template1 = find_template(template_path)
@@ -134,6 +141,7 @@ def wait_click(template_path, threshold=0.6):
             center_x = top_left_x + w // 2
             center_y = top_left_y + h // 2
             click_global(center_x, center_y)
+            return
         else:
             target = template_path.split('/')[1].split('.')[0]
             print(f"[{target}]匹配度不足: {max_val:.2f} < {threshold}")
@@ -217,6 +225,7 @@ def click_global(x, y):
     b = win_t + y
     # pyautogui.moveTo(a, b, 1)
     return pyautogui.click(a, b)
+    # click_without_move(a, b)
 
 
 def find_all_matches(template_path, threshold=0.6, overlap_threshold=0.3):
@@ -261,7 +270,7 @@ def one_row_click_end(row_template_path, end_template_path, threshold=0.6):
             break
 
 
-def attack_sleep(row):
+def attack_row_sleep(row):
     all_find = find_all_matches('npc/战斗.png', 0.7)
     a, b = all_find[row - 1]
     click_global(a, b)
@@ -308,3 +317,17 @@ def treat():
         if x2 != -1:
             break
         time.sleep(1)
+
+
+def any_match(*arr_path, threshold=0.6):
+    for path in arr_path:
+        x, y = find(path, threshold, print_msg=False)
+        if x != -1:
+            return True
+    return False
+
+
+def click_without_move(x, y):
+    # 直接向指定坐标发送点击信号（不移动物理光标）
+    hwnd = win32gui.FindWindow("雷电模拟器", None)
+    win32gui.SendMessage(hwnd, win32con.WM_CLOSE, 0, 0)

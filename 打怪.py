@@ -1,13 +1,13 @@
 import time
 
-from Tool import wait_click_sleep, attack_sleep, success_return, find, treat, wait_find, wait_double_click_sleep, \
+from Tool import wait_click_sleep, attack_row_sleep, success_return, find, treat, wait_find, wait_double_click_sleep, \
     wait_double_find_sleep, wait_click
 
 
 def da_guai():
     wait_click_sleep('主界面/人物.png')
     wait_double_find_sleep('npc/战斗.png', '主界面/人物.png')
-    attack_sleep(4)
+    attack_row_sleep(4)
     wait_click_sleep('战斗/自动出招.png')
     time.sleep(15)
     for j in range(1, 100):
@@ -21,7 +21,7 @@ def da_guai():
 def yong_yao_da_guai():
     wait_click_sleep('主界面/人物.png')
     wait_double_find_sleep('npc/战斗.png', '主界面/人物.png')
-    attack_sleep(3)
+    attack_row_sleep(3)
     wait_click_sleep('战斗/物品.png')
     wait_click_sleep('战斗/加2000.png')
     wait_click_sleep('战斗/红色.png', 0.5)
