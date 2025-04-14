@@ -35,7 +35,7 @@ def ph():
 
 def da_guai():
     wait_click_sleep('主界面/人物.png')
-    for i in range(10):
+    for i in range(9):
         print(f'第{i + 1}次刷图')
         attack_row_sleep(4)
         time.sleep(1)

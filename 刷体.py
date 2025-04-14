@@ -4,7 +4,7 @@ import cv2
 
 from Tool import find_template, read_win_popup_safe, wait_click_sleep, wait_double_find_sleep, attack_row_sleep, \
     success_return, find_match_max_val, find, click_global, find_all_matches
-from 回血 import chu_zhao, bu_xue1_or_attack, bu_xue2_or_attack
+from 回血 import chu_zhao, bu_xue1_or_attack, bu_xue2_or_fang_yu
 
 
 def ylj(template1_path, template2_path, threshold=0.6, print_msg=True):
@@ -48,7 +48,7 @@ def zhao_lv_bu():
     wait_click_sleep('战斗/招将.png')
     time.sleep(1)
     fu_jiang_chu_zhan(1)
-    bu_xue2_or_attack()
+    bu_xue2_or_fang_yu()
     chu_zhao(3)
 
 
@@ -83,7 +83,7 @@ if __name__ == '__main__':
         wait_click_sleep('主界面/人物.png')
         wait_double_find_sleep('npc/战斗.png', '主界面/人物.png')
         attack_row_sleep(2)
-        time.sleep(3)
+        time.sleep(4)
         x, y = ylj('刷体/羽林军6.png', '刷体/羽林军4.png')
         if x != -1:
             wait_click_sleep('战斗/自动出招.png')

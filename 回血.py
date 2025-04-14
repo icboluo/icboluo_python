@@ -39,13 +39,12 @@ def get_xue_liang():
     text = pytesseract.image_to_string(mask_dark_red, config=config)
     return int(text.strip())
 
-
 def bu_xue1():
     wait_click_sleep('战斗/物品.png')
     wait_click_sleep('战斗/加2000.png', threshold=0.8)
     xue = get_xue_liang()
     print("识别结果:", xue)
-    if 12341 - xue > 400:
+    if 12595 - xue > 4000:
         wait_click_sleep('战斗/红色.png')
         return True
     return False
@@ -56,9 +55,10 @@ def bu_xue2():
         x, y = find('战斗/红色.png')
         if x != -1:
             wait_click_sleep('副将/吕布.png')
+            time.sleep(1)
             xue = get_xue_liang()
             print("识别结果:", xue)
-            if 17461 - xue > 400:
+            if 17828 - xue > 4000:
                 wait_click_sleep('战斗/红色.png')
                 return True
             else:
@@ -78,9 +78,10 @@ def bu_xue3():
             all_match = find_all_matches('副将/龙飞.png')
             a, b = all_match[0]
             click_global(a, b)
+            time.sleep(1)
             xue = get_xue_liang()
             print("识别结果:", xue)
-            if 17569 - xue > 400:
+            if 17945 - xue > 4000:
                 wait_click_sleep('战斗/红色.png')
                 return True
             else:
@@ -100,9 +101,10 @@ def bu_xue4():
             all_match = find_all_matches('副将/龙飞.png')
             a, b = all_match[1]
             click_global(a, b)
+            time.sleep(1)
             xue = get_xue_liang()
             print("识别结果:", xue)
-            if 9435 - xue > 400:
+            if 9658 - xue > 4000:
                 wait_click_sleep('战斗/红色.png')
                 return True
             else:
@@ -123,12 +125,11 @@ def bu_xue1_or_attack():
         wait_click_sleep('战斗/红色.png')
 
 
-def bu_xue2_or_attack():
+def bu_xue2_or_fang_yu():
     is_treat = bu_xue2()
     if not is_treat:
         wait_click_sleep('战斗/返回.png')
-        wait_click_sleep('战斗/攻击.png')
-        wait_click_sleep('战斗/红色.png')
+        wait_click_sleep('战斗/防御.png')
 
 
 def chu_zhao(i):
