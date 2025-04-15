@@ -4,7 +4,6 @@ import cv2
 import numpy as np
 import pyautogui
 import pygetwindow as gw
-import win32api
 import win32con
 import win32gui
 
@@ -12,6 +11,8 @@ win_l = 1
 win_t = 1
 win_w = 1
 win_h = 1
+glo_ren_wu_x = 1
+glo_ren_wu_y = 1
 
 
 def find_zuo_biao():
@@ -29,7 +30,7 @@ def find_template(template_path):
 
 
 def read_win_popup_safe():
-    target_windows = gw.getWindowsWithTitle('雷电模拟器')
+    target_windows = gw.getWindowsWithTitle('夜神模拟器')
     if not target_windows:
         print("弹窗未找到，请检查标题是否匹配")
         return None
@@ -58,7 +59,7 @@ def read_screen():
     return screen_gray.astype(np.uint8)
 
 
-def find(template_path, threshold=0.6, print_msg=True):
+def find(template_path, threshold=0.8, print_msg=True):
     template = find_template(template_path)
     screen_gray = read_win_popup_safe()
 
@@ -79,8 +80,7 @@ def find(template_path, threshold=0.6, print_msg=True):
         return center_x, center_y
     else:
         if print_msg:
-            target = template_path.split('/')[1].split('.')[0]
-            print(f'没有找到目标 {target}')
+            print(f'没有找到目标 {path_str(template_path)}')
         return -1, -1
 
 
@@ -88,15 +88,13 @@ def find_match_max_val(template_path):
     screen_gray = read_win_popup_safe()
 
     template1 = find_template(template_path)
-    # 获取模板尺寸（注意：shape返回的顺序是 [高度, 宽度]）
-    h, w = template1.shape[:2]
     # 模板匹配
     res = cv2.matchTemplate(screen_gray, template1, cv2.TM_CCOEFF_NORMED)
     min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res)
     return max_val
 
 
-def wait_find(template_path, threshold=0.6):
+def wait_find(template_path, threshold=0.8):
     template = find_template(template_path)
     # 统一数据类型
     template = template.astype(np.uint8)
@@ -151,14 +149,14 @@ def wait_click(template_path, threshold=0.6):
             time.sleep(1)
 
 
-def wait_click_sleep(template_path, threshold=0.6):
+def wait_click_sleep(template_path, threshold=0.8):
     wait_click(template_path, threshold)
     time.sleep(1)
     target = template_path.split('/')[1].split('.')[0]
     print(f'点击移动到-> {target}')
 
 
-def click_sleep(template_path, threshold=0.6):
+def click_sleep(template_path, threshold=0.8):
     x, y = find(template_path, threshold)
     if x != -1:
         click_global(x, y)
@@ -167,7 +165,7 @@ def click_sleep(template_path, threshold=0.6):
     print(f'点击移动到-> {target}')
 
 
-def wait_double_click_sleep(template1_path, template2_path, threshold=0.6):
+def wait_double_click_sleep(template1_path, template2_path, threshold=0.8):
     while True:
         x, y = find(template1_path, threshold)
         if x != -1:
@@ -228,7 +226,7 @@ def click_global(x, y):
     # click_without_move(a, b)
 
 
-def find_all_matches(template_path, threshold=0.6, overlap_threshold=0.3):
+def find_all_matches(template_path, threshold=0.8, overlap_threshold=0.3):
     template = find_template(template_path)
     screen_gray = read_win_popup_safe()
     # 获取模板尺寸
@@ -271,7 +269,7 @@ def one_row_click_end(row_template_path, end_template_path, threshold=0.6):
 
 
 def attack_row_sleep(row):
-    all_find = find_all_matches('npc/战斗.png', 0.7)
+    all_find = find_all_matches('npc/战斗.png')
     a, b = all_find[row - 1]
     click_global(a, b)
     time.sleep(2)
@@ -286,18 +284,19 @@ def next_step(template_path):
 
 
 def success_return():
-    x3, y3 = find('胜利/胜利下一条.png', print_msg=False)
-    if x3 != -1:
-        click_global(x3, y3)
     x1, y1 = find('胜利/胜利下一条.png', print_msg=False)
     if x1 != -1:
         click_global(x1, y1)
     x4, y4 = find('胜利/胜利关闭.png', print_msg=False)
     if x4 != -1:
         click_global(x4, y4)
-    x2, y2 = find('胜利/胜利返回.png', print_msg=False)
-    if x2 != -1:
-        click_global(x2, y2)
+    x3, y3 = find('胜利/败北.png', print_msg=False)
+    global glo_ren_wu_x, glo_ren_wu_y
+    if x3 != -1:
+        click_global(glo_ren_wu_x, glo_ren_wu_y)
+    x5, y5 = find('胜利/胜利.png', print_msg=False)
+    if x5 != -1:
+        click_global(glo_ren_wu_x, glo_ren_wu_y)
 
 
 def treat():
@@ -331,3 +330,77 @@ def click_without_move(x, y):
     # 直接向指定坐标发送点击信号（不移动物理光标）
     hwnd = win32gui.FindWindow("雷电模拟器", None)
     win32gui.SendMessage(hwnd, win32con.WM_CLOSE, 0, 0)
+
+
+# 返回图片后缀
+def path_str(template_path):
+    return template_path.split('/')[1].split('.')[0]
+
+
+# 等待 是否第一个是最匹配的，如果没有任何一个匹配，报错
+def wait_is_first_max_match(template1_path, template2_path, template3_path, threshold=0.8):
+    is_find = False
+    for i in range(10):
+        a1 = find_match_max_val(template1_path)
+        a2 = find_match_max_val(template2_path)
+        a3 = find_match_max_val(template3_path)
+        if a1 >= threshold or a2 >= threshold or a3 >= threshold:
+            is_find = True
+            break
+        time.sleep(1)
+    if not is_find:
+        raise ValueError(
+            f'图片{path_str(template1_path)},{path_str(template2_path)},{path_str(template3_path)}均不匹配')
+
+    a1 = find_match_max_val(template1_path)
+    a2 = find_match_max_val(template2_path)
+    a3 = find_match_max_val(template3_path)
+    if a1 < a2 or a1 < a3:
+        return False
+    return True
+
+
+# 等待 发现第二个的时候返回，否则点击第一个图片进行尝试
+def wait_find_second_when_multiple_click_first(template1_path, template2_path, threshold=0.8):
+    for i in range(10):
+        x1, y1 = find(template1_path, threshold)
+        if x1 != -1:
+            click_global(x1, y1)
+        x2, y2 = find(template2_path, threshold)
+        if x2 != -1:
+            return
+        time.sleep(1)
+
+
+def print_template(template):
+    cv2.imwrite("a_template.png", template)
+
+
+def print_win_pop(win_pop):
+    cv2.imwrite("a_win_pop.png", win_pop)
+
+
+# 逃跑
+def escape():
+    for i in range(100):
+        x1, y1 = find('战斗/逃跑.png', print_msg=False)
+        if x1 != -1:
+            print('点击逃跑')
+            click_global(x1, y1)
+            time.sleep(1)
+        success_return()
+        x2, y2 = find('主界面/人物.png', print_msg=False)
+        if x2 != -1:
+            return
+        time.sleep(1)
+
+
+def init_zuo_biao():
+    x, y = wait_find('主界面/人物.png')
+    global glo_ren_wu_x, glo_ren_wu_y
+    glo_ren_wu_x = x
+    glo_ren_wu_y = y
+
+
+# 初始化坐标
+init_zuo_biao()

@@ -22,6 +22,15 @@ def xia_pi__xu_chang():
     wait_click_sleep('设施/确定传送.png')
 
 
+# 许昌--->洛阳
+def xu_chang__luo_yang():
+    wait_click_sleep('主界面/设施.png')
+    wait_click_sleep('设施/馆驿.png')
+    wait_click_sleep('设施/城市传送.png')
+    wait_click_sleep('设施/向西北往司隶.png')
+    wait_click_sleep('设施/确定传送.png')
+
+
 def py():
     wait_click_sleep('主界面/人物.png')
     one_row_click_end('npc/糜芳.png', 'npc/对话.png')
@@ -49,4 +58,4 @@ def da_guai():
 
 
 if __name__ == '__main__':
-    da_guai()
+    xu_chang__luo_yang()

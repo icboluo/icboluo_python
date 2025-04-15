@@ -4,7 +4,7 @@ import pytesseract
 from PIL import ImageEnhance, ImageFilter
 
 # 配置路径
-pytesseract.pytesseract.tesseract_cmd = r'D:\game\Tesseract-OCR\tesseract.exe'  # Tesseract路径
+pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'  # Tesseract路径
 
 
 def click_chinese_in_window(target_text):
