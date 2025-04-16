@@ -2,12 +2,11 @@ import time
 
 from Tool import wait_click_sleep, attack_row_sleep, success_return, find, wait_double_find_sleep
 from 回血 import get_xue_liang
+from 战斗 import attack_in_success
 
 
 def da_guai():
-    wait_click_sleep('主界面/人物.png')
-    wait_double_find_sleep('npc/战斗.png', '主界面/人物.png')
-    attack_row_sleep(3)
+    attack_in_success(3)
     wait_click_sleep('战斗/物品.png', threshold=0.7)
     wait_click_sleep('战斗/加2000.png')
     xue = get_xue_liang()

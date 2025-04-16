@@ -1,5 +1,4 @@
 from Tool import find, click_global, click_sleep
-from b import wait_click_sleep
 
 
 def wabao():

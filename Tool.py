@@ -80,7 +80,7 @@ def find(template_path, threshold=0.8, print_msg=True):
         return center_x, center_y
     else:
         if print_msg:
-            print(f'没有找到目标 {path_str(template_path)}')
+            print(f'没有找到目标 {path_str(template_path)},匹配度不足: {max_val:.2f} < {threshold}')
         return -1, -1
 
 
@@ -94,7 +94,7 @@ def find_match_max_val(template_path):
     return max_val
 
 
-def wait_find(template_path, threshold=0.8):
+def wait_find(template_path, threshold=0.8, print_msg=True):
     template = find_template(template_path)
     # 统一数据类型
     template = template.astype(np.uint8)
@@ -116,53 +116,32 @@ def wait_find(template_path, threshold=0.8):
 
             return center_x, center_y
         else:
-            target = template_path.split('/')
-            print(f"{target} 匹配度不足: {max_val:.2f} < {threshold}")
-            time.sleep(1)
-
-
-def wait_click(template_path, threshold=0.6):
-    # 读取模板图片
-    template = find_template(template_path)
-    # 获取模板尺寸（注意：shape返回的顺序是 [高度, 宽度]）
-    h, w = template.shape[:2]
-
-    while True:
-        screen_gray = read_win_popup_safe()
-        # 模板匹配
-        res = cv2.matchTemplate(screen_gray, template, cv2.TM_CCOEFF_NORMED)
-        min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res)
-
-        if max_val >= threshold:
-            # 提取左上角坐标
-            top_left_x, top_left_y = max_loc
-            center_x = top_left_x + w // 2
-            center_y = top_left_y + h // 2
-            click_global(center_x, center_y)
-            return
-        else:
-            target = template_path.split('/')[1].split('.')[0]
-            print(f"[{target}]匹配度不足: {max_val:.2f} < {threshold}")
+            if print_msg:
+                print(f'没有找到目标 {path_str(template_path)},匹配度不足: {max_val:.2f} < {threshold}')
             # t = datetime.now().strftime("%M_%S_%f")
             # cv2.imwrite("temp/tem" + t + ".png", template)
             # cv2.imwrite("temp/win" + t + ".png", screen_gray)
             time.sleep(1)
 
 
+def wait_click(template_path, threshold=0.8):
+    x, y = wait_find(template_path, threshold)
+    click_global(x, y)
+
+
 def wait_click_sleep(template_path, threshold=0.8):
     wait_click(template_path, threshold)
     time.sleep(1)
     target = template_path.split('/')[1].split('.')[0]
-    print(f'点击移动到-> {target}')
+    print(f'等待点击-> {target}')
 
 
 def click_sleep(template_path, threshold=0.8):
     x, y = find(template_path, threshold)
     if x != -1:
         click_global(x, y)
+        print(f'点击移动到-> {path_str(template_path)}')
     time.sleep(1)
-    target = template_path.split('/')[1].split('.')[0]
-    print(f'点击移动到-> {target}')
 
 
 def wait_double_click_sleep(template1_path, template2_path, threshold=0.8):
@@ -191,39 +170,12 @@ def wait_double_find_sleep(template1_path, template2_path, threshold=0.6):
         time.sleep(1)
 
 
-def move(template_path, threshold=0.6):
-    template = find_template(template_path)
-    screen_gray = read_win_popup_safe()
-
-    # 获取模板尺寸（注意：shape返回的顺序是 [高度, 宽度]）
-    h, w = template.shape[:2]
-
-    # 模板匹配
-    res = cv2.matchTemplate(screen_gray, template, cv2.TM_CCOEFF_NORMED)
-    min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res)
-
-    if max_val >= threshold:
-        # 提取左上角坐标
-        top_left_x, top_left_y = max_loc
-        global win_l, win_t
-        # 计算中心点坐标（修正点）
-        center_x = win_l + top_left_x + w // 2
-        center_y = win_t + top_left_y + h // 2
-
-        return pyautogui.moveTo(center_x, center_y, duration=0.5)
-    else:
-        target = template_path.split('/')[1].split('.')[0]
-        print(f'没有找到目标 {target}')
-        return -1, -1
-
-
 def click_global(x, y):
     global win_l, win_t
     a = win_l + x
     b = win_t + y
     # pyautogui.moveTo(a, b, 1)
     return pyautogui.click(a, b)
-    # click_without_move(a, b)
 
 
 def find_all_matches(template_path, threshold=0.8, overlap_threshold=0.3):
@@ -257,6 +209,11 @@ def find_all_matches(template_path, threshold=0.8, overlap_threshold=0.3):
     return final_matches
 
 
+def wait_find_all_matches(template_path, threshold=0.8, print_msg=True):
+    wait_find(template_path, threshold, print_msg)
+    return find_all_matches(template_path, threshold)
+
+
 # 一行点击最后面
 def one_row_click_end(row_template_path, end_template_path, threshold=0.6):
     x, y = find(row_template_path, threshold)
@@ -269,18 +226,10 @@ def one_row_click_end(row_template_path, end_template_path, threshold=0.6):
 
 
 def attack_row_sleep(row):
-    all_find = find_all_matches('npc/战斗.png')
+    all_find = wait_find_all_matches('npc/战斗.png')
     a, b = all_find[row - 1]
     click_global(a, b)
     time.sleep(2)
-
-
-def next_step(template_path):
-    for i in range(10):
-        cx, cy = find(template_path)
-        if cx != -1:
-            click_global(cx, cy)
-        time.sleep(1)
 
 
 def success_return():
@@ -299,37 +248,12 @@ def success_return():
         click_global(glo_ren_wu_x, glo_ren_wu_y)
 
 
-def treat():
-    wait_click_sleep('主界面/功能.png')
-    wait_click_sleep('功能/物品.png')
-    wait_click_sleep('功能/快速恢复.png')
-    while True:
-        x, y = find('功能/确定.png')
-        if x != -1:
-            click_global(x, y)
-            time.sleep(1)
-        x1, y1 = find('功能/返回.png')
-        if x1 != -1:
-            click_global(x1, y1)
-            time.sleep(1)
-        x2, y2 = find('主界面/人物.png')
-        if x2 != -1:
-            break
-        time.sleep(1)
-
-
-def any_match(*arr_path, threshold=0.6):
+def any_match(*arr_path, threshold=0.8):
     for path in arr_path:
         x, y = find(path, threshold, print_msg=False)
         if x != -1:
             return True
     return False
-
-
-def click_without_move(x, y):
-    # 直接向指定坐标发送点击信号（不移动物理光标）
-    hwnd = win32gui.FindWindow("雷电模拟器", None)
-    win32gui.SendMessage(hwnd, win32con.WM_CLOSE, 0, 0)
 
 
 # 返回图片后缀
@@ -382,10 +306,12 @@ def print_win_pop(win_pop):
 
 # 逃跑
 def escape():
+    j = 0
     for i in range(100):
         x1, y1 = find('战斗/逃跑.png', print_msg=False)
         if x1 != -1:
-            print('点击逃跑')
+            j += 1
+            print(f'第{j}次点击逃跑')
             click_global(x1, y1)
             time.sleep(1)
         success_return()
