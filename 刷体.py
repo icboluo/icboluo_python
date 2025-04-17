@@ -30,8 +30,8 @@ def treat():
         all_match_gw = find_all_matches('刷体/羽林军死亡.png')
         for i in range(4):
             if arr[i] == -1 or (i == 0 and len(all_match_gw) < 5):
-                wait_click_sleep('战斗/攻击.png')
-                wait_click_sleep('战斗/红色.png', threshold=0.7)
+                wait_click_sleep('战斗/攻击.png', sleep_time=0.5)
+                wait_click_sleep('战斗/红色.png', threshold=0.7, print_msg=False)
             else:
                 bu_xue(arr[i])
         after_chu_zhao()
@@ -96,8 +96,8 @@ if __name__ == '__main__':
                         if len(all_match) >= 4:
                             break
                         else:
-                            wait_click_sleep('战斗/攻击.png')
-                            wait_click_sleep('战斗/红色.png')
+                            wait_click_sleep('战斗/攻击.png', sleep_time=0.5)
+                            wait_click_sleep('战斗/红色.png', threshold=0.7, print_msg=False)
                     zhao_fu_jiang()
                     treat()
                     break

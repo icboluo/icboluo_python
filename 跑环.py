@@ -111,6 +111,7 @@ def move14_to_lv_ling_da_dao():
     wait_click_sleep('移动/濮阳郊外.png')
     return 4, 5
 
+
 # 6个怪物
 def move15_to_kuang_shi_da_dao():
     wait_click_sleep('主界面/移动.png')
@@ -128,15 +129,15 @@ def move16_to_bai_ying_da_dao():
 
 
 def treat_or_attach():
-    wait_click_sleep('战斗/物品.png', threshold=0.7)
-    wait_click_sleep('战斗/加2000.png')
+    wait_click_sleep('战斗/物品.png', sleep_time=0.5, threshold=0.7)
+    wait_click_sleep('战斗/加2000.png', sleep_time=0.5)
     xue = get_xue_liang()
     print("血量剩余:", xue)
     if xue < 500:
         wait_click_sleep('战斗/红色.png', threshold=0.7)
     else:
-        wait_click_sleep('战斗/返回.png', threshold=0.7)
-        wait_click_sleep('战斗/攻击.png', threshold=0.7)
+        wait_click_sleep('战斗/返回.png', sleep_time=0.5, threshold=0.7)
+        wait_click_sleep('战斗/攻击.png', sleep_time=0.5, threshold=0.7)
         wait_click_sleep('战斗/红色.png', threshold=0.7)
 
 
@@ -195,5 +196,3 @@ if __name__ == '__main__':
         attack_then_return(a, b)
         a, b = move16_to_bai_ying_da_dao()
         attack_then_return(a, b)
-
-

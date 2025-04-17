@@ -5,18 +5,20 @@ import numpy as np
 import pyautogui
 import pytesseract
 
-from Tool import wait_click_sleep, find_all_matches, click_global, find, find_zuo_biao, wait_find_all_matches
+from Tool import wait_click_sleep, find_all_matches, click_global, find, find_zuo_biao, wait_find_all_matches, wait_find
 
 # 配置路径
 pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'  # Tesseract路径
 
-a1 = 13114
-a2 = 18570
-a3 = 18687
-a4 = 10109
+a1 = 13695
+a2 = 19321
+a3 = 19439
+a4 = 10569
 
 
 def get_xue_liang():
+    wait_find('战斗/红色.png')
+    time.sleep(0.3)
     left, top, width, height = find_zuo_biao()
     screenshot = pyautogui.screenshot(region=(left + 280, top + 375, width // 6, height // 27))
     screenshot.save("aa.png")
@@ -46,32 +48,32 @@ def get_xue_liang():
 
 
 def bu_xue1_or_zhan_dou_fang_yu(is_fight=False):
-    wait_click_sleep('战斗/物品.png', threshold=0.7)
-    wait_click_sleep('战斗/加2000.png')
+    wait_click_sleep('战斗/物品.png', sleep_time=0.5, threshold=0.7)
+    wait_click_sleep('战斗/加2000.png', sleep_time=0.5)
     global a1
     if a1 - get_xue_liang() > 400:
-        wait_click_sleep('战斗/红色.png', threshold=0.7)
+        wait_click_sleep('战斗/红色.png', threshold=0.7, print_msg=False)
         return
-    wait_click_sleep('战斗/返回.png')
+    wait_click_sleep('战斗/返回.png', sleep_time=0.5)
     if is_fight:
-        wait_click_sleep('战斗/攻击.png')
-        wait_click_sleep('战斗/红色.png')
+        wait_click_sleep('战斗/攻击.png', sleep_time=0.5)
+        wait_click_sleep('战斗/红色.png', threshold=0.7, print_msg=False)
     else:
         wait_click_sleep('战斗/防御.png')
 
 
 def bu_xue2_or_zhan_dou_fang_yu(is_fight=False):
-    wait_click_sleep('战斗/物品.png', threshold=0.7)
-    wait_click_sleep('战斗/加2000.png')
-    wait_click_sleep('副将/吕布.png', threshold=0.7)
+    wait_click_sleep('战斗/物品.png', sleep_time=0.5, threshold=0.7)
+    wait_click_sleep('战斗/加2000.png', sleep_time=0.5)
+    wait_click_sleep('副将/吕布.png', sleep_time=0.5, threshold=0.7)
     global a2
     if a2 - get_xue_liang() > 400:
-        wait_click_sleep('战斗/红色.png', threshold=0.7)
+        wait_click_sleep('战斗/红色.png', threshold=0.7, print_msg=False)
         return
-    wait_click_sleep('战斗/返回.png')
+    wait_click_sleep('战斗/返回.png', sleep_time=0.5)
     if is_fight:
         wait_click_sleep('战斗/攻击.png')
-        wait_click_sleep('战斗/红色.png')
+        wait_click_sleep('战斗/红色.png', threshold=0.7, print_msg=False)
     else:
         wait_click_sleep('战斗/防御.png')
 
@@ -100,55 +102,53 @@ def sun_shi_max_bu_xue(sun_shi):
 
 
 def bu_xue(i):
-    wait_click_sleep('战斗/物品.png', threshold=0.7)
+    wait_click_sleep('战斗/物品.png', sleep_time=0.5, threshold=0.7)
+    x, y = find('战斗/物品.png')
+    if x != -1:
+        wait_click_sleep('战斗/物品.png', sleep_time=0.5, threshold=0.7)
     wait_click_sleep('战斗/加2000.png')
     if i == 2:
-        wait_click_sleep('副将/吕布.png', threshold=0.7)
+        wait_click_sleep('副将/吕布.png', sleep_time=0.5, threshold=0.7)
     elif i == 3:
         all_match = wait_find_all_matches('副将/龙飞.png', threshold=0.7)
-        if len(all_match) == 0:
+        while len(all_match) == 0:
             all_match = wait_find_all_matches('副将/龙飞.png', threshold=0.7)
         a, b = all_match[0]
         click_global(a, b)
-        time.sleep(1)
+        time.sleep(0.5)
     elif i == 4:
         all_match = wait_find_all_matches('副将/龙飞.png', threshold=0.7)
-        if len(all_match) == 0:
+        while len(all_match) == 0:
             all_match = wait_find_all_matches('副将/龙飞.png', threshold=0.7)
         a, b = all_match[1]
         click_global(a, b)
-        time.sleep(1)
-    wait_click_sleep('战斗/红色.png', threshold=0.7)
+        time.sleep(0.5)
+    wait_click_sleep('战斗/红色.png', sleep_time=0.5, threshold=0.7)
 
 
 def shen_yu_xue_liang():
     global a1, a2, a3, a4
     arr = [a1, a2, a3, a4]
     wait_click_sleep('战斗/物品.png')
-    wait_click_sleep('战斗/加2000.png', threshold=0.8)
+    wait_click_sleep('战斗/加2000.png', sleep_time=0.5, threshold=0.8)
     a = get_xue_liang()
     arr[0] = a
 
     wait_click_sleep('副将/吕布.png', threshold=0.7)
-    time.sleep(1)
     b = get_xue_liang()
     arr[1] = b
 
-    all_match = find_all_matches('副将/龙飞.png', threshold=0.7)
-    if not all_match:
-        return arr
+    all_match = wait_find_all_matches('副将/龙飞.png', threshold=0.7)
     x, y = all_match[0]
     click_global(x, y)
-    time.sleep(1)
     c = get_xue_liang()
     arr[2] = c
 
-    all_match = find_all_matches('副将/龙飞.png', threshold=0.7)
+    all_match = wait_find_all_matches('副将/龙飞.png', threshold=0.7)
     if len(all_match) == 1:
         return arr
     x, y = all_match[1]
     click_global(x, y)
-    time.sleep(1)
     d = get_xue_liang()
     arr[3] = d
     return arr
@@ -158,10 +158,13 @@ def sun_shi_xue_liang():
     global a1, a2, a3, a4
     arr = [a1, a2, a3, a4]
     arr2 = shen_yu_xue_liang()
-    wait_click_sleep('战斗/返回.png')
+    for i in range(10):
+        x, y = find('战斗/返回.png')
+        if x != -1:
+            click_global(x, y)
+            break
+        time.sleep(1)
+
     for i in range(4):
         arr[i] -= arr2[i]
     return arr
-# if __name__ == "__main__":
-#     read_win_popup_safe()
-#     get_xue_liang()

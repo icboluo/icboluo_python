@@ -121,7 +121,7 @@ def wait_find(template_path, threshold=0.8, print_msg=True):
             # t = datetime.now().strftime("%M_%S_%f")
             # cv2.imwrite("temp/tem" + t + ".png", template)
             # cv2.imwrite("temp/win" + t + ".png", screen_gray)
-            time.sleep(1)
+            time.sleep(0.5)
 
 
 def wait_click(template_path, threshold=0.8):
@@ -129,11 +129,11 @@ def wait_click(template_path, threshold=0.8):
     click_global(x, y)
 
 
-def wait_click_sleep(template_path, threshold=0.8):
+def wait_click_sleep(template_path, threshold=0.8, sleep_time=1, print_msg=True):
+    if print_msg:
+        print(f'等待点击-> {path_str(template_path)}')
     wait_click(template_path, threshold)
-    time.sleep(1)
-    target = template_path.split('/')[1].split('.')[0]
-    print(f'等待点击-> {target}')
+    time.sleep(sleep_time)
 
 
 def click_sleep(template_path, threshold=0.8):

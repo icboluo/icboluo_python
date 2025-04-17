@@ -8,7 +8,7 @@ from 战斗 import attack_in_success
 def da_guai():
     attack_in_success(3)
     wait_click_sleep('战斗/物品.png', threshold=0.7)
-    wait_click_sleep('战斗/加2000.png')
+    wait_click_sleep('战斗/加2000.png', sleep_time=0.5)
     xue = get_xue_liang()
     print("血量剩余:", xue)
     if xue < 500:
