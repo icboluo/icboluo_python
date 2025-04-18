@@ -101,7 +101,7 @@ def wait_find(template_path, threshold=0.8, print_msg=True):
     # 获取模板尺寸（注意：shape返回的顺序是 [高度, 宽度]）
     h, w = template.shape[:2]
 
-    while True:
+    for i in range(100):
         screen_gray = read_win_popup_safe()
 
         # 模板匹配
@@ -122,17 +122,14 @@ def wait_find(template_path, threshold=0.8, print_msg=True):
             # cv2.imwrite("temp/tem" + t + ".png", template)
             # cv2.imwrite("temp/win" + t + ".png", screen_gray)
             time.sleep(0.5)
-
-
-def wait_click(template_path, threshold=0.8):
-    x, y = wait_find(template_path, threshold)
-    click_global(x, y)
+    raise ValueError
 
 
 def wait_click_sleep(template_path, threshold=0.8, sleep_time=1, print_msg=True):
     if print_msg:
         print(f'等待点击-> {path_str(template_path)}')
-    wait_click(template_path, threshold)
+    x, y = wait_find(template_path, threshold)
+    click_global(x, y)
     time.sleep(sleep_time)
 
 
@@ -142,21 +139,6 @@ def click_sleep(template_path, threshold=0.8):
         click_global(x, y)
         print(f'点击移动到-> {path_str(template_path)}')
     time.sleep(1)
-
-
-def wait_double_click_sleep(template1_path, template2_path, threshold=0.8):
-    while True:
-        x, y = find(template1_path, threshold)
-        if x != -1:
-            click_global(x, y)
-            time.sleep(1)
-            target = template1_path.split('/')[1].split('.')[0]
-            print(f'点击移动到-> {target}')
-            return
-        x1, y1 = find(template2_path, threshold)
-        if x1 != -1:
-            click_global(x1, y1)
-        time.sleep(1)
 
 
 def wait_double_find_sleep(template1_path, template2_path, threshold=0.6):

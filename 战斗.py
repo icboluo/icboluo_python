@@ -1,6 +1,6 @@
 import time
 
-from Tool import wait_find_second_when_multiple_click_first, attack_row_sleep, find, click_global
+from Tool import wait_find_second_when_multiple_click_first, attack_row_sleep, find, click_global, wait_find_all_matches
 
 
 # 攻击进入副本

@@ -5,14 +5,14 @@ import numpy as np
 import pyautogui
 import pytesseract
 
-from Tool import wait_click_sleep, find_all_matches, click_global, find, find_zuo_biao, wait_find_all_matches, wait_find
+from Tool import wait_click_sleep, click_global, find, find_zuo_biao, wait_find_all_matches, wait_find
 
 # 配置路径
 pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'  # Tesseract路径
 
-a1 = 13695
-a2 = 19321
-a3 = 19439
+a1 = 14152
+a2 = 19700
+a3 = 19810
 a4 = 10569
 
 

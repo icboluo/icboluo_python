@@ -34,6 +34,7 @@ def treat():
                 wait_click_sleep('战斗/红色.png', threshold=0.7, print_msg=False)
             else:
                 bu_xue(arr[i])
+        time.sleep(1)
         after_chu_zhao()
         x, y = find('主界面/主界面.png')
         if x != -1:
@@ -80,7 +81,7 @@ def after_chu_zhao():
 if __name__ == '__main__':
     start = datetime.datetime.now()
     while True:
-        attack_in_success(4)
+        attack_in_success(1)
         is_first_match = wait_is_first_max_match('刷体/羽林军6.png', '刷体/羽林军4.png', '刷体/羽林军2.png')
         if is_first_match:
             fight_time_add_print(start)

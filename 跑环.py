@@ -1,7 +1,6 @@
 import time
 
-from Tool import wait_click_sleep, one_row_click_end, success_return, find, \
-    attack_row_sleep, wait_double_find_sleep, wait_find_second_when_multiple_click_first, click_global
+from Tool import wait_click_sleep, success_return, find
 from 回血 import get_xue_liang
 from 战斗 import attack_in_success
 
@@ -141,9 +140,9 @@ def treat_or_attach():
         wait_click_sleep('战斗/红色.png', threshold=0.7)
 
 
-def attack(row, is_treat=False):
+def attack(row):
     attack_in_success(row)
-    if is_treat:
+    if fight_time % 3 == 0:
         treat_or_attach()
     wait_click_sleep('战斗/自动出招.png')
     time.sleep(5)
@@ -158,7 +157,7 @@ def attack(row, is_treat=False):
 def attack_then_return(a, b):
     for i in range(10):
         fight_time_add_print()
-        attack(a, is_treat=True)
+        attack(a)
         fight_time_add_print()
         attack(b)
     wait_click_sleep('主界面/移动.png')
@@ -174,25 +173,195 @@ def fight_time_add_print():
     print(f'第{fight_time}次刷图')
 
 
+def move_1to_di_pi():
+    wait_click_sleep('主界面/移动.png')
+    wait_click_sleep('移动/许昌郊外.png')
+    return 4, -1
+
+
+def move_2to_tun_tian_bing():
+    wait_click_sleep('主界面/移动.png')
+    wait_click_sleep('移动/许昌郊外.png')
+    wait_click_sleep('移动/颍阳.png')
+    return 3, -1
+
+
+def move_3to_hu_bao_qi():
+    wait_click_sleep('主界面/移动.png')
+    wait_click_sleep('移动/许昌郊外.png')
+    wait_click_sleep('移动/颍阳.png')
+    wait_click_sleep('移动/蔡县.png')
+    return 4, -1
+
+
+def move_4to_fu_ru():
+    wait_click_sleep('主界面/移动.png')
+    wait_click_sleep('移动/许昌郊外.png')
+    wait_click_sleep('移动/陈.png')
+    wait_click_sleep('移动/谯郡.png')
+    wait_click_sleep('移动/南顿.png')
+    return 3, -1
+
+
+def move_5to_jie_fei():
+    wait_click_sleep('主界面/移动.png')
+    wait_click_sleep('移动/许昌郊外.png')
+    wait_click_sleep('移动/许昌西郊.png')
+    return 3, -1
+
+
+def move_6to_tan_guan():
+    wait_click_sleep('主界面/移动.png')
+    wait_click_sleep('移动/许昌郊外.png')
+    wait_click_sleep('移动/陈.png')
+    return 3, -1
+
+
+def move_7to_suan_ding():
+    wait_click_sleep('主界面/移动.png')
+    wait_click_sleep('移动/许昌郊外.png')
+    wait_click_sleep('移动/陈.png')
+    wait_click_sleep('移动/谯郡.png')
+    return 3, -1
+
+
+def move_8to_xiang_shen():
+    wait_click_sleep('主界面/移动.png')
+    wait_click_sleep('移动/许昌郊外.png')
+    wait_click_sleep('移动/陈.png')
+    wait_click_sleep('移动/谯郡.png')
+    wait_click_sleep('移动/颖水.png')
+    return 3, -1
+
+
+def move_9to_jia_dao_xue():
+    wait_click_sleep('主界面/移动.png')
+    wait_click_sleep('移动/许昌郊外.png')
+    wait_click_sleep('移动/许昌西郊.png')
+    wait_click_sleep('移动/长社.png')
+    return 3, 4
+
+
+def move_10to_wu_li():
+    wait_click_sleep('主界面/移动.png')
+    wait_click_sleep('移动/许昌郊外.png')
+    wait_click_sleep('移动/许昌西郊.png')
+    wait_click_sleep('移动/长社.png')
+    wait_click_sleep('移动/中牟.png')
+    return 3, 4
+
+
+def move_11to_lu_ba():
+    wait_click_sleep('主界面/移动.png')
+    wait_click_sleep('移动/许昌郊外.png')
+    wait_click_sleep('移动/颍阳.png')
+    wait_click_sleep('移动/颍川.png')
+    return 3, -1
+
+
+# 30只
+
+def move_21to_dao_shi():
+    wait_click_sleep('主界面/移动.png')
+    wait_click_sleep('移动/许昌郊外.png')
+    wait_click_sleep('移动/颍阳.png')
+    wait_click_sleep('移动/叛军一营.png')
+    wait_click_sleep('移动/叛军二营.png')
+    return 3, 4
+
+
+def move_22to_shu_shi():
+    wait_click_sleep('主界面/移动.png')
+    wait_click_sleep('移动/许昌郊外.png')
+    wait_click_sleep('移动/颍阳.png')
+    wait_click_sleep('移动/叛军一营.png')
+    wait_click_sleep('移动/叛军二营.png')
+    wait_click_sleep('移动/叛军三营.png')
+    return 3, 4
+
+
+def move_23to_e_sheng():
+    wait_click_sleep('主界面/移动.png')
+    wait_click_sleep('移动/许昌郊外.png')
+    wait_click_sleep('移动/颍阳.png')
+    wait_click_sleep('移动/叛军一营.png')
+    wait_click_sleep('移动/叛军二营.png')
+    wait_click_sleep('移动/叛军三营.png')
+    wait_click_sleep('移动/叛军四营.png')
+    return 3, 4
+
+
+def move_24to_jiang_shi():
+    wait_click_sleep('主界面/移动.png')
+    wait_click_sleep('移动/许昌郊外.png')
+    wait_click_sleep('移动/颍阳.png')
+    wait_click_sleep('移动/叛军一营.png')
+    wait_click_sleep('移动/叛军二营.png')
+    wait_click_sleep('移动/叛军三营.png')
+    wait_click_sleep('移动/叛军四营.png')
+    return 3, 4
+
+
+def attack_chen_liu():
+    a, b = move1_to_li_shi()
+    attack_then_return(a, b)
+    a, b = move2_to_e_pu()
+    attack_then_return(a, b)
+    a, b = move3_to_bai_nei()
+    attack_then_return(a, b)
+    a, b = move4_to_e_gun()
+    attack_then_return(a, b)
+    a, b = move11_to_huang_jin_shi_bing()
+    attack_then_return(a, b)
+    a, b = move12_to_huang_jin_qi_bing()
+    attack_then_return(a, b)
+    a, b = move13_to_du_xing_da_dao()
+    attack_then_return(a, b)
+    a, b = move14_to_lv_ling_da_dao()
+    attack_then_return(a, b)
+    a, b = move15_to_kuang_shi_da_dao()
+    attack_then_return(a, b)
+    a, b = move16_to_bai_ying_da_dao()
+    attack_then_return(a, b)
+
+
+def attack_then_return_xu_chang(a, b):
+    for i in range(5):
+        fight_time_add_print()
+        attack(a)
+        if b != -1:
+            fight_time_add_print()
+            attack(b)
+    wait_click_sleep('主界面/移动.png')
+    wait_click_sleep('移动/返回中心许昌.png')
+
+
+def attack_10():
+    a, b = move_1to_di_pi()
+    attack_then_return_xu_chang(a, b)
+    a, b = move_2to_tun_tian_bing()
+    attack_then_return_xu_chang(a, b)
+    a, b = move_3to_hu_bao_qi()
+    # 物品TODO
+    attack_then_return_xu_chang(a, b)
+    a, b = move_4to_fu_ru()
+    attack_then_return_xu_chang(a, b)
+    a, b = move_5to_jie_fei()
+    attack_then_return_xu_chang(a, b)
+    a, b = move_6to_tan_guan()
+    attack_then_return_xu_chang(a, b)
+    a, b = move_7to_suan_ding()
+    attack_then_return_xu_chang(a, b)
+    a, b = move_8to_xiang_shen()
+    attack_then_return_xu_chang(a, b)
+    a, b = move_9to_jia_dao_xue()
+    attack_then_return_xu_chang(a, b)
+    a, b = move_10to_wu_li()
+    attack_then_return_xu_chang(a, b)
+    a, b = move_11to_lu_ba()
+    attack_then_return_xu_chang(a, b)
+
+
 if __name__ == '__main__':
     for i in range(100):
-        a, b = move1_to_li_shi()
-        attack_then_return(a, b)
-        a, b = move2_to_e_pu()
-        attack_then_return(a, b)
-        a, b = move3_to_bai_nei()
-        attack_then_return(a, b)
-        a, b = move4_to_e_gun()
-        attack_then_return(a, b)
-        a, b = move11_to_huang_jin_shi_bing()
-        attack_then_return(a, b)
-        a, b = move12_to_huang_jin_qi_bing()
-        attack_then_return(a, b)
-        a, b = move13_to_du_xing_da_dao()
-        attack_then_return(a, b)
-        a, b = move14_to_lv_ling_da_dao()
-        attack_then_return(a, b)
-        a, b = move15_to_kuang_shi_da_dao()
-        attack_then_return(a, b)
-        a, b = move16_to_bai_ying_da_dao()
-        attack_then_return(a, b)
+        attack_10()
