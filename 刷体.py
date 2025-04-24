@@ -9,16 +9,16 @@ from 战斗 import attack_in_success
 
 def zhao_fu_jiang():
     wait_click_sleep('战斗/招将.png')
-    fu_jiang_chu_zhan(2)
+    fu_jiang_chu_zhan(1)
 
     wait_click_sleep('战斗/招将.png')
-    fu_jiang_chu_zhan(1)
+    fu_jiang_chu_zhan(2)
     bu_xue1_or_zhan_dou_fang_yu()
 
     wait_click_sleep('战斗/招将.png')
     fu_jiang_chu_zhan(1)
     bu_xue1_or_zhan_dou_fang_yu(is_fight=True)
-    bu_xue2_or_zhan_dou_fang_yu(is_fight=True)
+    bu_xue2_or_zhan_dou_fang_yu()
 
 
 def treat():
@@ -35,10 +35,14 @@ def treat():
             else:
                 bu_xue(arr[i])
         time.sleep(1)
-        after_chu_zhao()
-        x, y = find('主界面/主界面.png')
-        if x != -1:
-            return
+        while True:
+            after_chu_zhao()
+            x, y = find('主界面/主界面.png')
+            if x != -1:
+                return
+            x, y = find('战斗/物品.png')
+            if x != -1:
+                break
 
 
 def fu_jiang_chu_zhan(row):
@@ -48,21 +52,22 @@ def fu_jiang_chu_zhan(row):
     time.sleep(1)
 
 
+start_time = datetime.datetime.now()
 fight_time = 0
 escape_time = 0
 
 
-def fight_time_add_print(start):
-    global fight_time
+def fight_time_add_print():
+    global start_time, fight_time
     fight_time += 1
-    t = (datetime.datetime.now() - start).total_seconds()
+    t = (datetime.datetime.now() - start_time).total_seconds()
     print(f'第{fight_time}次刷图, 已逃跑{escape_time}次, 共花费{t}秒')
 
 
-def escape_time_add_print(start):
-    global escape_time
+def escape_time_add_print():
+    global start_time, escape_time
     escape_time += 1
-    t = (datetime.datetime.now() - start).total_seconds()
+    t = (datetime.datetime.now() - start_time).total_seconds()
     print(f'第{escape_time}次逃跑, 已刷图{fight_time}次, 共花费{t}秒')
 
 
@@ -78,31 +83,35 @@ def after_chu_zhao():
         time.sleep(1)
 
 
+def attack_one():
+    attack_in_success(1, 2)
+    time.sleep(3)
+    is_first_match = wait_is_first_max_match('刷体/羽林军6.png', '刷体/羽林军4.png', '刷体/羽林军2.png')
+    if is_first_match:
+        fight_time_add_print()
+        wait_click_sleep('战斗/自动出招.png')
+        time.sleep(2)
+        while True:
+            all_match = find_all_matches('刷体/羽林军死亡.png')
+            if len(all_match) >= 3:
+                wait_click_sleep('战斗/手动出招.png')
+                while True:
+                    time.sleep(1)
+                    all_match = find_all_matches('刷体/羽林军死亡.png')
+                    if len(all_match) >= 4:
+                        break
+                    else:
+                        wait_click_sleep('战斗/攻击.png', sleep_time=0.5)
+                        wait_click_sleep('战斗/红色.png', threshold=0.7, print_msg=False)
+                zhao_fu_jiang()
+                # treat()
+                break
+            time.sleep(1)
+    else:
+        escape_time_add_print()
+        escape()
+
+
 if __name__ == '__main__':
-    start = datetime.datetime.now()
     while True:
-        attack_in_success(1)
-        is_first_match = wait_is_first_max_match('刷体/羽林军6.png', '刷体/羽林军4.png', '刷体/羽林军2.png')
-        if is_first_match:
-            fight_time_add_print(start)
-            wait_click_sleep('战斗/自动出招.png')
-            time.sleep(2)
-            while True:
-                all_match = find_all_matches('刷体/羽林军死亡.png')
-                if len(all_match) >= 3:
-                    wait_click_sleep('战斗/手动出招.png')
-                    while True:
-                        time.sleep(1)
-                        all_match = find_all_matches('刷体/羽林军死亡.png')
-                        if len(all_match) >= 4:
-                            break
-                        else:
-                            wait_click_sleep('战斗/攻击.png', sleep_time=0.5)
-                            wait_click_sleep('战斗/红色.png', threshold=0.7, print_msg=False)
-                    zhao_fu_jiang()
-                    treat()
-                    break
-                time.sleep(1)
-        else:
-            escape_time_add_print(start)
-            escape()
+        attack_one()

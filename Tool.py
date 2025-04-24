@@ -254,6 +254,8 @@ def wait_is_first_max_match(template1_path, template2_path, template3_path, thre
             is_find = True
             break
         time.sleep(1)
+        if i % 3 == 0:
+            print(f'没有找到目标 {path_str(template1_path)},匹配度不足: {a1:.2f} < {threshold}')
     if not is_find:
         raise ValueError(
             f'图片{path_str(template1_path)},{path_str(template2_path)},{path_str(template3_path)}均不匹配')

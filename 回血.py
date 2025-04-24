@@ -10,10 +10,10 @@ from Tool import wait_click_sleep, click_global, find, find_zuo_biao, wait_find_
 # 配置路径
 pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'  # Tesseract路径
 
-a1 = 14152
-a2 = 19700
-a3 = 19810
-a4 = 10569
+a1 = 15096
+a2 = 20466
+a3 = 20976
+a4 = 11400
 
 
 def get_xue_liang():
@@ -51,7 +51,7 @@ def bu_xue1_or_zhan_dou_fang_yu(is_fight=False):
     wait_click_sleep('战斗/物品.png', sleep_time=0.5, threshold=0.7)
     wait_click_sleep('战斗/加2000.png', sleep_time=0.5)
     global a1
-    if a1 - get_xue_liang() > 400:
+    if a1 - get_xue_liang() > 800:
         wait_click_sleep('战斗/红色.png', threshold=0.7, print_msg=False)
         return
     wait_click_sleep('战斗/返回.png', sleep_time=0.5)
@@ -67,7 +67,7 @@ def bu_xue2_or_zhan_dou_fang_yu(is_fight=False):
     wait_click_sleep('战斗/加2000.png', sleep_time=0.5)
     wait_click_sleep('副将/吕布.png', sleep_time=0.5, threshold=0.7)
     global a2
-    if a2 - get_xue_liang() > 400:
+    if a2 - get_xue_liang() > 800:
         wait_click_sleep('战斗/红色.png', threshold=0.7, print_msg=False)
         return
     wait_click_sleep('战斗/返回.png', sleep_time=0.5)
@@ -95,7 +95,7 @@ def sun_shi_max_bu_xue(sun_shi):
         if sun_shi[i] > sun_max:
             sun_max = sun_shi[i]
             idx = i
-    if sun_max <= 400:
+    if sun_max <= 800:
         return -1
     sun_shi[idx] -= 2000
     return idx + 1

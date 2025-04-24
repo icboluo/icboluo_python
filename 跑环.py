@@ -5,82 +5,22 @@ from 回血 import get_xue_liang
 from 战斗 import attack_in_success
 
 
-# 许昌--->下邳
+# 许昌--->陈留
 def xu_chang__xia_pi():
     wait_click_sleep('主界面/设施.png')
     wait_click_sleep('设施/馆驿.png')
     wait_click_sleep('设施/城市传送.png')
-    wait_click_sleep('设施/向东往徐州.png')
+    wait_click_sleep('设施/向北往永州.png')
     wait_click_sleep('设施/确定传送.png')
 
 
-# 下邳--->许昌
+# 陈留--->许昌
 def xia_pi__xu_chang():
     wait_click_sleep('主界面/设施.png')
     wait_click_sleep('设施/馆驿.png')
     wait_click_sleep('设施/城市传送.png')
-    wait_click_sleep('设施/向西往豫州.png')
+    wait_click_sleep('设施/向南往豫州.png')
     wait_click_sleep('设施/确定传送.png')
-
-
-# 许昌--->洛阳
-def xu_chang__luo_yang():
-    wait_click_sleep('主界面/设施.png')
-    wait_click_sleep('设施/馆驿.png')
-    wait_click_sleep('设施/城市传送.png')
-    wait_click_sleep('设施/向西北往司隶.png')
-    wait_click_sleep('设施/确定传送.png')
-
-
-def move1_to_li_shi():
-    wait_click_sleep('主界面/移动.png')
-    wait_click_sleep('移动/陈留郊外.png')
-    wait_click_sleep('移动/陈留西郊.png')
-    wait_click_sleep('移动/先锋一营.png')
-    return 4, 5
-
-
-def move2_to_e_pu():
-    wait_click_sleep('主界面/移动.png')
-    wait_click_sleep('移动/陈留郊外.png')
-    wait_click_sleep('移动/陈留西郊.png')
-    wait_click_sleep('移动/先锋一营.png')
-    wait_click_sleep('移动/先锋二营.png')
-    return 4, 5
-
-
-def move3_to_bai_nei():
-    wait_click_sleep('主界面/移动.png')
-    wait_click_sleep('移动/陈留郊外.png')
-    wait_click_sleep('移动/陈留西郊.png')
-    wait_click_sleep('移动/先锋一营.png')
-    wait_click_sleep('移动/先锋二营.png')
-    wait_click_sleep('移动/先锋三营.png')
-    return 4, 5
-
-
-# 4个怪物
-def move4_to_e_gun():
-    wait_click_sleep('主界面/移动.png')
-    wait_click_sleep('移动/陈留郊外.png')
-    wait_click_sleep('移动/陈留西郊.png')
-    wait_click_sleep('移动/先锋一营.png')
-    wait_click_sleep('移动/先锋二营.png')
-    wait_click_sleep('移动/先锋三营.png')
-    wait_click_sleep('移动/先锋四营.png')
-    return 4, 5
-
-
-def move11_to_huang_jin_shi_bing():
-    wait_click_sleep('主界面/移动.png')
-    wait_click_sleep('移动/陈留郊外.png')
-    wait_click_sleep('移动/陈留西郊.png')
-    wait_click_sleep('移动/先锋一营.png')
-    wait_click_sleep('移动/先锋二营.png')
-    wait_click_sleep('移动/先锋三营.png')
-    wait_click_sleep('移动/先锋四营.png')
-    wait_click_sleep('移动/先锋领军.png')
-    return 4, 5
 
 
 def move12_to_huang_jin_qi_bing():
@@ -142,8 +82,8 @@ def treat_or_attach():
 
 def attack(row):
     attack_in_success(row)
-    if fight_time % 3 == 0:
-        treat_or_attach()
+    # if fight_time % 3 == 0:
+    #     treat_or_attach()
     wait_click_sleep('战斗/自动出招.png')
     time.sleep(5)
     for j in range(1, 100):
@@ -164,6 +104,16 @@ def attack_then_return(a, b):
     wait_click_sleep('移动/返回中心陈留.png')
 
 
+def attack_not_return(a, b, times):
+    for i in range(times):
+        fight_time_add_print()
+        attack(a)
+        if b != -1:
+            fight_time_add_print()
+            attack(b)
+    wait_click_sleep('主界面/移动.png')
+
+
 fight_time = 0
 
 
@@ -171,19 +121,6 @@ def fight_time_add_print():
     global fight_time
     fight_time += 1
     print(f'第{fight_time}次刷图')
-
-
-def move_1to_di_pi():
-    wait_click_sleep('主界面/移动.png')
-    wait_click_sleep('移动/许昌郊外.png')
-    return 4, -1
-
-
-def move_2to_tun_tian_bing():
-    wait_click_sleep('主界面/移动.png')
-    wait_click_sleep('移动/许昌郊外.png')
-    wait_click_sleep('移动/颍阳.png')
-    return 3, -1
 
 
 def move_3to_hu_bao_qi():
@@ -259,60 +196,56 @@ def move_11to_lu_ba():
     return 3, -1
 
 
-# 30只
-
-def move_21to_dao_shi():
+def attack_xian_feng():
     wait_click_sleep('主界面/移动.png')
-    wait_click_sleep('移动/许昌郊外.png')
-    wait_click_sleep('移动/颍阳.png')
-    wait_click_sleep('移动/叛军一营.png')
-    wait_click_sleep('移动/叛军二营.png')
-    return 3, 4
+    wait_click_sleep('移动/陈留郊外.png')
+    # 矿石大盗、宝石大盗 100/6
+    wait_click_sleep('移动/陈留西郊.png')
+    attack_not_return(3, 4, 17)
+    # 力士、斧手
+    wait_click_sleep('移动/先锋一营.png')
+    attack_not_return(4, 5, 60 / 4)
+    # 恶仆、女贼
+    wait_click_sleep('移动/先锋二营.png')
+    attack_not_return(4, 5, 60 / 4)
+    # 败类、凶徒
+    wait_click_sleep('移动/先锋三营.png')
+    attack_not_return(4, 5, 60 / 4)
+    # 恶棍、囚徒
+    wait_click_sleep('移动/先锋四营.png')
+    attack_not_return(4, 5, 60 / 4)
+    # 黄巾士兵、黄巾精兵
+    wait_click_sleep('移动/先锋领军.png')
+    attack_not_return(4, 5, 100 / 5)
+    wait_click_sleep('移动/返回中心陈留.png')
 
 
-def move_22to_shu_shi():
+def attack_pan_jun():
     wait_click_sleep('主界面/移动.png')
+    # 地痞
     wait_click_sleep('移动/许昌郊外.png')
+    attack_not_return(4, -1, 5)
+    # 屯田兵
     wait_click_sleep('移动/颍阳.png')
+    attack_not_return(3, -1, 5)
     wait_click_sleep('移动/叛军一营.png')
+    # 道士、老道
     wait_click_sleep('移动/叛军二营.png')
+    attack_not_return(3, 4, 15)
+    # 术士、妖人
     wait_click_sleep('移动/叛军三营.png')
-    return 3, 4
-
-
-def move_23to_e_sheng():
-    wait_click_sleep('主界面/移动.png')
-    wait_click_sleep('移动/许昌郊外.png')
-    wait_click_sleep('移动/颍阳.png')
-    wait_click_sleep('移动/叛军一营.png')
-    wait_click_sleep('移动/叛军二营.png')
-    wait_click_sleep('移动/叛军三营.png')
+    attack_not_return(3, 4, 15)
+    # 恶僧、头陀
     wait_click_sleep('移动/叛军四营.png')
-    return 3, 4
-
-
-def move_24to_jiang_shi():
-    wait_click_sleep('主界面/移动.png')
-    wait_click_sleep('移动/许昌郊外.png')
-    wait_click_sleep('移动/颍阳.png')
-    wait_click_sleep('移动/叛军一营.png')
-    wait_click_sleep('移动/叛军二营.png')
-    wait_click_sleep('移动/叛军三营.png')
-    wait_click_sleep('移动/叛军四营.png')
-    return 3, 4
+    attack_not_return(3, 4, 15)
+    # 僵尸、游魂
+    wait_click_sleep('移动/叛军五营.png')
+    attack_not_return(3, 4, 15)
+    print('叛军五营刷完一遍')
+    wait_click_sleep('移动/返回中心许昌.png')
 
 
 def attack_chen_liu():
-    a, b = move1_to_li_shi()
-    attack_then_return(a, b)
-    a, b = move2_to_e_pu()
-    attack_then_return(a, b)
-    a, b = move3_to_bai_nei()
-    attack_then_return(a, b)
-    a, b = move4_to_e_gun()
-    attack_then_return(a, b)
-    a, b = move11_to_huang_jin_shi_bing()
-    attack_then_return(a, b)
     a, b = move12_to_huang_jin_qi_bing()
     attack_then_return(a, b)
     a, b = move13_to_du_xing_da_dao()
@@ -337,12 +270,7 @@ def attack_then_return_xu_chang(a, b):
 
 
 def attack_10():
-    a, b = move_1to_di_pi()
-    attack_then_return_xu_chang(a, b)
-    a, b = move_2to_tun_tian_bing()
-    attack_then_return_xu_chang(a, b)
     a, b = move_3to_hu_bao_qi()
-    # 物品TODO
     attack_then_return_xu_chang(a, b)
     a, b = move_4to_fu_ru()
     attack_then_return_xu_chang(a, b)
@@ -364,4 +292,4 @@ def attack_10():
 
 if __name__ == '__main__':
     for i in range(100):
-        attack_10()
+        attack_pan_jun()
