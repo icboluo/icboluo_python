@@ -17,7 +17,7 @@ a4 = 11400
 
 
 def get_xue_liang():
-    wait_find('战斗/红色.png')
+    wait_find('战斗/红色.png', threshold=0.7)
     time.sleep(0.3)
     left, top, width, height = find_zuo_biao()
     screenshot = pyautogui.screenshot(region=(left + 280, top + 375, width // 6, height // 27))

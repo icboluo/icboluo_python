@@ -12,7 +12,7 @@ def zhao_fu_jiang():
     fu_jiang_chu_zhan(1)
 
     wait_click_sleep('战斗/招将.png')
-    fu_jiang_chu_zhan(2)
+    fu_jiang_chu_zhan(1)
     bu_xue1_or_zhan_dou_fang_yu()
 
     wait_click_sleep('战斗/招将.png')
