@@ -7,17 +7,7 @@ import pygetwindow as gw
 import win32con
 import win32gui
 
-win_l = 1
-win_t = 1
-win_w = 1
-win_h = 1
-glo_ren_wu_x = 1
-glo_ren_wu_y = 1
-
-
-def find_zuo_biao():
-    global win_l, win_t, win_w, win_h
-    return win_l, win_t, win_w, win_h
+from Global import Global
 
 
 # 发现模版
@@ -41,11 +31,7 @@ def read_win_popup_safe():
 
         # 截取弹窗区域
     screen = pyautogui.screenshot(region=(window.left, window.top, window.width, window.height))
-    global win_l, win_t, win_w, win_h
-    win_l = window.left
-    win_t = window.top
-    win_w = window.width
-    win_h = window.height
+    Global.update_position(window.left, window.top, window.width, window.height)
     screen_gray = cv2.cvtColor(np.array(screen), cv2.COLOR_RGB2GRAY)
     return screen_gray.astype(np.uint8)
 
@@ -153,9 +139,8 @@ def wait_double_find_sleep(template1_path, template2_path, threshold=0.6):
 
 
 def click_global(x, y):
-    global win_l, win_t
-    a = win_l + x
-    b = win_t + y
+    a = Global.win_l + x
+    b = Global.win_t + y
     # pyautogui.moveTo(a, b, 1)
     return pyautogui.click(a, b)
 
@@ -307,10 +292,9 @@ def escape():
 
 def init_zuo_biao():
     x, y = wait_find('主界面/人物.png')
-    global glo_ren_wu_x, glo_ren_wu_y
-    glo_ren_wu_x = x
-    glo_ren_wu_y = y
+    Global.glo_ren_wu_x = x
+    Global.glo_ren_wu_y = y
 
 
 # 初始化坐标
-init_zuo_biao()
+# init_zuo_biao()

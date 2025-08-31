@@ -184,6 +184,7 @@ def attack_chen_liu_ding_tao():
     wait_click_sleep('移动/定陶.png')
     attack_not_return(3, 4, 50, 6)
     # 独行大盗、采花大盗
+
     wait_click_sleep('移动/濮阳南郊.png')
     attack_not_return(3, 4, 50, 6)
     # 绿林大盗、江洋大盗
@@ -198,11 +199,13 @@ def attack_chen_liu_ding_tao():
 
 if __name__ == '__main__':
     for i in range(10):
-        attack_chen_liu_xi_jiao()
-        attack_chen_liu_ding_tao()
-        chen_liu__xu_chang()
-
         attack_xu_chang_pan_jun()
         attack_xu_chang_xi_jiao()
         attack_xu_chang_cheng()
         xu_chang__chen_liu()
+
+        attack_chen_liu_xi_jiao()
+        attack_chen_liu_ding_tao()
+        chen_liu__xu_chang()
+
+
