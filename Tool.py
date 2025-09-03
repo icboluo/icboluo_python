@@ -1,3 +1,4 @@
+import datetime
 import time
 
 import cv2
@@ -43,6 +44,12 @@ def read_screen():
     # 明确从 RGB 转灰度（与模板的 IMREAD_GRAYSCALE 一致）
     screen_gray = cv2.cvtColor(screen_rgb, cv2.COLOR_RGB2GRAY)
     return screen_gray.astype(np.uint8)
+
+
+def write():
+    screen_gray = read_win_popup_safe()
+    cv2.imwrite("picture/temp1.png", screen_gray)
+    time.sleep(0.5)
 
 
 def find(template_path, threshold=0.8, print_msg=True):
@@ -294,7 +301,6 @@ def init_zuo_biao():
     x, y = wait_find('主界面/人物.png')
     Global.glo_ren_wu_x = x
     Global.glo_ren_wu_y = y
-
 
 # 初始化坐标
 # init_zuo_biao()
