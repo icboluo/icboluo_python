@@ -1,6 +1,7 @@
 import math
 import time
 
+import ini
 from Tool import wait_click_sleep, success_return, find
 from 回血 import get_xue_liang
 from 战斗 import attack_in_success
@@ -198,6 +199,7 @@ def attack_chen_liu_ding_tao():
 
 
 if __name__ == '__main__':
+    ini.init_information()
     for i in range(10):
         attack_xu_chang_pan_jun()
         attack_xu_chang_xi_jiao()

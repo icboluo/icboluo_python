@@ -28,13 +28,11 @@ def count_people_status(image_path):
             status = analyze_person_status(person_img)
             status_count[status] += 1
 
-            # 可视化标记
-            color = (0, 255, 0) if status == "alive" else (0, 0, 255)
-            cv2.rectangle(result.orig_img, (x1, y1), (x2, y2), color, 2)
-            cv2.putText(result.orig_img, status, (x1, y1 - 10),
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.9, color, 2)
-
-    # 保存结果图像
-    cv2.imwrite('output.jpg', result.orig_img)
     print(f"检测结果：存活 {status_count['alive']} 人，死亡 {status_count['dead']} 人")
     return status_count
+
+
+if __name__ == '__main__':
+    analyzer = GameCharacterAnalyzer()
+    alive, dead = analyzer.detect_status("picture/alive2_dead2.png")
+    print(f"检测完成：存活角色 {alive} 个，死亡角色 {dead} 个")

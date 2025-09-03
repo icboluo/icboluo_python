@@ -20,28 +20,15 @@ a4 = 11400
 def get_xue_liang():
     wait_find('战斗/红色.png', threshold=0.7)
     time.sleep(0.3)
-    left, top, width, height = Pos.win_position()
-    screenshot = pyautogui.screenshot(region=(left + 280, top + 375, width // 6, height // 27))
-    screenshot.save("aa.png")
 
     img = cv2.imread('picture/血量/aa.png')
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
-
-    # 定义淡红色范围（低饱和度）
-    lower_light_red1 = np.array([0, 40, 150])  # 色调0-10°, 饱和度较低
-    upper_light_red1 = np.array([10, 120, 255])
-    lower_light_red2 = np.array([170, 40, 150])  # 色调170-180°
-    upper_light_red2 = np.array([180, 120, 255])
 
     # 定义深红色干扰背景范围（高饱和度）
     lower_dark_red = np.array([0, 120, 50])
     upper_dark_red = np.array([180, 255, 200])
 
-    # 生成淡红掩膜并排除深红背景
-    mask_light_red = cv2.inRange(hsv, lower_light_red1, upper_light_red1) | \
-                     cv2.inRange(hsv, lower_light_red2, upper_light_red2)
     mask_dark_red = cv2.inRange(hsv, lower_dark_red, upper_dark_red)
-    final_mask = cv2.subtract(mask_light_red, mask_dark_red)
     # OCR 识别
     config = r'--oem 3 --psm 6 -c tessedit_char_whitelist=0123456789'
     text = pytesseract.image_to_string(mask_dark_red, config=config)

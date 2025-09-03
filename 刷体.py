@@ -2,7 +2,7 @@ import datetime
 import time
 
 import ini
-from AiTool import alive_and_dead_is_match
+from AiTool import alive_and_dead_is_match, dead_num
 from Tool import wait_click_sleep, success_return, find, click_global, find_all_matches, escape, any_match, \
     wait_find_all_matches
 from 回血 import bu_xue1_or_zhan_dou_fang_yu, sun_shi_xue_liang, chu_zhao_shun_xu, bu_xue, bu_xue2_or_zhan_dou_fang_yu
@@ -97,13 +97,13 @@ def attack_one():
     wait_click_sleep('战斗/自动出招.png')
     time.sleep(2)
     while True:
-        all_match = find_all_matches('刷体/羽林军死亡.png')
-        if len(all_match) >= 3:
+        dead = dead_num()
+        if dead >= 3:
             wait_click_sleep('战斗/手动出招.png')
             while True:
                 time.sleep(1)
-                all_match = find_all_matches('刷体/羽林军死亡.png')
-                if len(all_match) >= 4:
+                dead = dead_num()
+                if dead >= 4:
                     break
                 else:
                     wait_click_sleep('战斗/攻击.png', sleep_time=0.5)
