@@ -1,14 +1,11 @@
-import datetime
 import time
 
 import cv2
 import numpy as np
 import pyautogui
 import pygetwindow as gw
-import win32con
-import win32gui
 
-from Global import Global
+from Global import Pos
 
 
 # 发现模版
@@ -19,8 +16,7 @@ def find_template(template_path):
     template = cv2.imdecode(img_bytes, cv2.IMREAD_GRAYSCALE)
     return template.astype(np.uint8)
 
-
-def read_win_popup_safe():
+def win_popup():
     target_windows = gw.getWindowsWithTitle('夜神模拟器')
     if not target_windows:
         print("弹窗未找到，请检查标题是否匹配")
@@ -29,11 +25,17 @@ def read_win_popup_safe():
     window = target_windows[0]
     if window.isMinimized:
         window.restore()
+    return window
 
-        # 截取弹窗区域
+
+def read_win_popup_safe():
+    window = win_popup()
+    # 截取弹窗区域，彩图
     screen = pyautogui.screenshot(region=(window.left, window.top, window.width, window.height))
-    Global.update_position(window.left, window.top, window.width, window.height)
+    # screen.save('screen.png')
+    # 转换为灰度图
     screen_gray = cv2.cvtColor(np.array(screen), cv2.COLOR_RGB2GRAY)
+    # cv2.imwrite("picture/temp/screen_gray.png", screen_gray)
     return screen_gray.astype(np.uint8)
 
 
@@ -44,12 +46,6 @@ def read_screen():
     # 明确从 RGB 转灰度（与模板的 IMREAD_GRAYSCALE 一致）
     screen_gray = cv2.cvtColor(screen_rgb, cv2.COLOR_RGB2GRAY)
     return screen_gray.astype(np.uint8)
-
-
-def write():
-    screen_gray = read_win_popup_safe()
-    cv2.imwrite("picture/temp1.png", screen_gray)
-    time.sleep(0.5)
 
 
 def find(template_path, threshold=0.8, print_msg=True):
@@ -146,8 +142,8 @@ def wait_double_find_sleep(template1_path, template2_path, threshold=0.6):
 
 
 def click_global(x, y):
-    a = Global.win_l + x
-    b = Global.win_t + y
+    a = Pos.win_l + x
+    b = Pos.win_t + y
     # pyautogui.moveTo(a, b, 1)
     return pyautogui.click(a, b)
 
@@ -214,12 +210,11 @@ def success_return():
     if x4 != -1:
         click_global(x4, y4)
     x3, y3 = find('胜利/败北.png', print_msg=False)
-    global glo_ren_wu_x, glo_ren_wu_y
     if x3 != -1:
-        click_global(glo_ren_wu_x, glo_ren_wu_y)
+        click_global(Pos.figure_x, Pos.figure_y)
     x5, y5 = find('胜利/胜利.png', print_msg=False)
     if x5 != -1:
-        click_global(glo_ren_wu_x, glo_ren_wu_y)
+        click_global(Pos.figure_x, Pos.figure_y)
 
 
 def any_match(*arr_path, threshold=0.8):
@@ -233,31 +228,6 @@ def any_match(*arr_path, threshold=0.8):
 # 返回图片后缀
 def path_str(template_path):
     return template_path.split('/')[1].split('.')[0]
-
-
-# 等待 是否第一个是最匹配的，如果没有任何一个匹配，报错
-def wait_is_first_max_match(template1_path, template2_path, template3_path, threshold=0.8):
-    is_find = False
-    for i in range(10):
-        a1 = find_match_max_val(template1_path)
-        a2 = find_match_max_val(template2_path)
-        a3 = find_match_max_val(template3_path)
-        if a1 >= threshold or a2 >= threshold or a3 >= threshold:
-            is_find = True
-            break
-        time.sleep(1)
-        if i % 3 == 0:
-            print(f'没有找到目标 {path_str(template1_path)},匹配度不足: {a1:.2f} < {threshold}')
-    if not is_find:
-        raise ValueError(
-            f'图片{path_str(template1_path)},{path_str(template2_path)},{path_str(template3_path)}均不匹配')
-
-    a1 = find_match_max_val(template1_path)
-    a2 = find_match_max_val(template2_path)
-    a3 = find_match_max_val(template3_path)
-    if a1 < a2 or a1 < a3:
-        return False
-    return True
 
 
 # 等待 发现第二个的时候返回，否则点击第一个图片进行尝试
@@ -295,12 +265,3 @@ def escape():
         if x2 != -1:
             return
         time.sleep(1)
-
-
-def init_zuo_biao():
-    x, y = wait_find('主界面/人物.png')
-    Global.glo_ren_wu_x = x
-    Global.glo_ren_wu_y = y
-
-# 初始化坐标
-# init_zuo_biao()

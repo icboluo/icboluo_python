@@ -38,7 +38,3 @@ def count_people_status(image_path):
     cv2.imwrite('output.jpg', result.orig_img)
     print(f"检测结果：存活 {status_count['alive']} 人，死亡 {status_count['dead']} 人")
     return status_count
-
-
-if __name__ == "__main__":
-    print(count_people_status("picture/temp1.png"))

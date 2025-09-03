@@ -1,6 +1,6 @@
 import time
 
-from Tool import wait_click_sleep, attack_row_sleep, success_return, find, is_fight, any_match
+from Tool import wait_click_sleep, attack_row_sleep, success_return, find, any_match
 
 
 def zhao_xiang():

@@ -5,7 +5,8 @@ import numpy as np
 import pyautogui
 import pytesseract
 
-from Tool import wait_click_sleep, click_global, find, find_zuo_biao, wait_find_all_matches, wait_find
+from Global import Pos
+from Tool import wait_click_sleep, click_global, find, wait_find_all_matches, wait_find
 
 # 配置路径
 pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'  # Tesseract路径
@@ -19,11 +20,11 @@ a4 = 11400
 def get_xue_liang():
     wait_find('战斗/红色.png', threshold=0.7)
     time.sleep(0.3)
-    left, top, width, height = find_zuo_biao()
+    left, top, width, height = Pos.win_position()
     screenshot = pyautogui.screenshot(region=(left + 280, top + 375, width // 6, height // 27))
     screenshot.save("aa.png")
 
-    img = cv2.imread('aa.png')
+    img = cv2.imread('picture/血量/aa.png')
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
     # 定义淡红色范围（低饱和度）

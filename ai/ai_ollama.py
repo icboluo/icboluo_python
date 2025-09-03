@@ -27,7 +27,7 @@ def analyze_game_units(screenshot_path):
 
 if __name__ == "__main__":
     try:
-        stats = analyze_game_units("刷体/羽林军6.png")
+        stats = analyze_game_units("../刷体/羽林军6.png")
         print(f"存活单位: {stats.get('alive_units', 0)} | 死亡单位: {stats.get('dead_units', 0)}")
     except Exception as e:
         print(f"分析失败: {str(e)}")

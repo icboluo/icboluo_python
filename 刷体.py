@@ -1,8 +1,10 @@
 import datetime
 import time
 
-from Tool import wait_click_sleep, success_return, find, click_global, find_all_matches, wait_is_first_max_match, \
-    escape, any_match, wait_find_all_matches
+import ini
+from AiTool import alive_and_dead_is_match
+from Tool import wait_click_sleep, success_return, find, click_global, find_all_matches, escape, any_match, \
+    wait_find_all_matches
 from 回血 import bu_xue1_or_zhan_dou_fang_yu, sun_shi_xue_liang, chu_zhao_shun_xu, bu_xue, bu_xue2_or_zhan_dou_fang_yu
 from 战斗 import attack_in_success
 
@@ -84,34 +86,35 @@ def after_chu_zhao():
 
 
 def attack_one():
-    attack_in_success(1, 2)
+    attack_in_success(1, 4)
     time.sleep(3)
-    is_first_match = wait_is_first_max_match('刷体/羽林军6.png', '刷体/羽林军4.png', '刷体/羽林军2.png')
-    if is_first_match:
-        fight_time_add_print()
-        wait_click_sleep('战斗/自动出招.png')
-        time.sleep(2)
-        while True:
-            all_match = find_all_matches('刷体/羽林军死亡.png')
-            if len(all_match) >= 3:
-                wait_click_sleep('战斗/手动出招.png')
-                while True:
-                    time.sleep(1)
-                    all_match = find_all_matches('刷体/羽林军死亡.png')
-                    if len(all_match) >= 4:
-                        break
-                    else:
-                        wait_click_sleep('战斗/攻击.png', sleep_time=0.5)
-                        wait_click_sleep('战斗/红色.png', threshold=0.7, print_msg=False)
-                zhao_fu_jiang()
-                # treat()
-                break
-            time.sleep(1)
-    else:
+    is_first_match = alive_and_dead_is_match(6, 2)
+    if not is_first_match:
         escape_time_add_print()
         escape()
+        return
+    fight_time_add_print()
+    wait_click_sleep('战斗/自动出招.png')
+    time.sleep(2)
+    while True:
+        all_match = find_all_matches('刷体/羽林军死亡.png')
+        if len(all_match) >= 3:
+            wait_click_sleep('战斗/手动出招.png')
+            while True:
+                time.sleep(1)
+                all_match = find_all_matches('刷体/羽林军死亡.png')
+                if len(all_match) >= 4:
+                    break
+                else:
+                    wait_click_sleep('战斗/攻击.png', sleep_time=0.5)
+                    wait_click_sleep('战斗/红色.png', threshold=0.7, print_msg=False)
+            zhao_fu_jiang()
+            # treat()
+            break
+        time.sleep(1)
 
 
 if __name__ == '__main__':
+    ini.init_information()
     while True:
         attack_one()
