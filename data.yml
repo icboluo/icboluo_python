@@ -1,0 +1,5 @@
+path: xun # 数据集根目录
+train: images/train # 训练集
+val: images/val # 验证集
+nc: 18 # 类别数量，下面一行为类别名称
+names: [ dog,person,cat,tv,car,meatballs,marinara sauce,tomato soup,chicken noodle soup,french onion soup,chicken breast,ribs,pulled pork,hamburger,cavity,ylj-alive,sb-dead,sb-alive ]

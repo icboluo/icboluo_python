@@ -2,16 +2,14 @@ import time
 
 import cv2
 import numpy as np
-import pyautogui
 import pytesseract
 
-from Global import Pos
 from Tool import wait_click_sleep, click_global, find, wait_find_all_matches, wait_find
 
 # 配置路径
 pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'  # Tesseract路径
 
-a1 = 15096
+a1 = 8311
 a2 = 20466
 a3 = 20976
 a4 = 11400

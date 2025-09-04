@@ -1,3 +1,5 @@
+from ultralytics import YOLO
+
 from Global import Pos
 from Tool import win_popup, wait_find
 
@@ -10,7 +12,6 @@ def init_information():
     Pos.update_figure(x, y)
     print(f'读取人物栏位置成功, 人物栏中心位置：{Pos.figure_position()}')
     print('初始化完成')
-
 
 # if __name__ == '__main__':
 #     init_information()

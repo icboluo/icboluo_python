@@ -2,9 +2,9 @@ import datetime
 import time
 
 import ini
-from AiTool import alive_and_dead_is_match, dead_num
-from Tool import wait_click_sleep, success_return, find, click_global, find_all_matches, escape, any_match, \
-    wait_find_all_matches
+from AiTool import dead_num, total_num
+from Tool import wait_click_sleep, success_return, find, click_global, find_all_matches, any_match, \
+    wait_find_all_matches, escape
 from 回血 import bu_xue1_or_zhan_dou_fang_yu, sun_shi_xue_liang, chu_zhao_shun_xu, bu_xue, bu_xue2_or_zhan_dou_fang_yu
 from 战斗 import attack_in_success
 
@@ -29,9 +29,9 @@ def treat():
         print(f'损失血量为: {sun_xue}')
         arr = chu_zhao_shun_xu(sun_xue)
 
-        all_match_gw = find_all_matches('刷体/羽林军死亡.png')
+        dead = dead_num()
         for i in range(4):
-            if arr[i] == -1 or (i == 0 and len(all_match_gw) < 5):
+            if arr[i] == -1 or (i == 0 and dead < 5):
                 wait_click_sleep('战斗/攻击.png', sleep_time=0.5)
                 wait_click_sleep('战斗/红色.png', threshold=0.7, print_msg=False)
             else:
@@ -88,8 +88,7 @@ def after_chu_zhao():
 def attack_one():
     attack_in_success(1, 4)
     time.sleep(3)
-    is_first_match = alive_and_dead_is_match(6, 2)
-    if not is_first_match:
+    if not total_num() == 6:
         escape_time_add_print()
         escape()
         return

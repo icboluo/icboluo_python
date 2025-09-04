@@ -16,6 +16,7 @@ def find_template(template_path):
     template = cv2.imdecode(img_bytes, cv2.IMREAD_GRAYSCALE)
     return template.astype(np.uint8)
 
+
 def win_popup():
     target_windows = gw.getWindowsWithTitle('夜神模拟器')
     if not target_windows:

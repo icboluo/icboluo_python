@@ -6,9 +6,15 @@ class Pos:
     figure_x = -1
     figure_y = -1
 
+    yolo = None
+
     @staticmethod
     def win_position() -> list[int]:
         return [Pos.win_l, Pos.win_t, Pos.win_w, Pos.win_h]
+
+    @staticmethod
+    def win_position_tup() -> tuple[int, int, int, int]:
+        return Pos.win_l, Pos.win_t, Pos.win_w, Pos.win_h
 
     @staticmethod
     def update_position(l, t, w, h) -> None:

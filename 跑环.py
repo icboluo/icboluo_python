@@ -29,7 +29,7 @@ def chen_liu__xu_chang():
 
 def treat_or_attach():
     wait_click_sleep('战斗/物品.png', sleep_time=0.5, threshold=0.7)
-    wait_click_sleep('战斗/加2000.png', sleep_time=0.5)
+    wait_click_sleep('战斗/加1500.png', sleep_time=0.5)
     xue = get_xue_liang()
     print("血量剩余:", xue)
     if xue < 500:
@@ -42,8 +42,9 @@ def treat_or_attach():
 
 def attack(row):
     attack_in_success(row)
-    if fight_time % 3 == 0:
-        treat_or_attach()
+    # if fight_time % 3 == 0:
+    #     treat_or_attach()
+    treat_or_attach()
     time.sleep(2)
     wait_click_sleep('战斗/自动出招.png')
     time.sleep(5)
