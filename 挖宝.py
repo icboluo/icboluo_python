@@ -2,7 +2,7 @@ from Tool import find, click_global, click_sleep
 
 
 def wabao():
-    # wait_click_sleep('主界面/设施.png')
+    # wait_click_sleep('主界面/设施_洛阳.png')
     # wait_click_sleep('设施/战场.png')
     # wait_click_sleep('战场/宝洞.png')
     # wait_click_sleep('战场/宝石矿洞.png')

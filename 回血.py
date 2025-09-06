@@ -2,14 +2,16 @@ import time
 
 import cv2
 import numpy as np
+import pyautogui
 import pytesseract
 
+import Global
 from Tool import wait_click_sleep, click_global, find, wait_find_all_matches, wait_find
 
 # 配置路径
 pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'  # Tesseract路径
 
-a1 = 8311
+a1 = 8486
 a2 = 20466
 a3 = 20976
 a4 = 11400
@@ -18,13 +20,18 @@ a4 = 11400
 def get_xue_liang():
     wait_find('战斗/红色.png', threshold=0.7)
     time.sleep(0.3)
+    left, top, width, height = Global.Pos.win_position()
+    screenshot = pyautogui.screenshot(region=(left + 280, top + 375, width // 6, height // 27))
+    screenshot.save("aa.png")
 
-    img = cv2.imread('picture/血量/aa.png')
+    img = cv2.imread('aa.png')
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
     # 定义深红色干扰背景范围（高饱和度）
     lower_dark_red = np.array([0, 120, 50])
     upper_dark_red = np.array([180, 255, 200])
+
+    # 生成淡红掩膜并排除深红背景
 
     mask_dark_red = cv2.inRange(hsv, lower_dark_red, upper_dark_red)
     # OCR 识别

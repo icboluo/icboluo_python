@@ -6,9 +6,6 @@ from Tool import wait_click_sleep, success_return, find
 from 回血 import get_xue_liang
 from 战斗 import attack_in_success
 
-global_time = 2
-
-
 # 许昌--->陈留
 def xu_chang__chen_liu():
     wait_click_sleep('主界面/设施.png')
@@ -42,9 +39,8 @@ def treat_or_attach():
 
 def attack(row):
     attack_in_success(row)
-    # if fight_time % 3 == 0:
-    #     treat_or_attach()
-    treat_or_attach()
+    if fight_time % 3 == 0:
+        treat_or_attach()
     time.sleep(2)
     wait_click_sleep('战斗/自动出招.png')
     time.sleep(5)
@@ -57,8 +53,8 @@ def attack(row):
 
 
 def attack_not_return(a, b, need_num, one_num):
-    global global_time
-    times = math.ceil(global_time * need_num / one_num)
+    times = math.ceil(need_num / one_num)
+    # times = 1
     for i in range(times):
         fight_time_add_print()
         attack(a)
@@ -210,5 +206,3 @@ if __name__ == '__main__':
         attack_chen_liu_xi_jiao()
         attack_chen_liu_ding_tao()
         chen_liu__xu_chang()
-
-
