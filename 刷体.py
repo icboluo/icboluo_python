@@ -86,9 +86,9 @@ def after_chu_zhao():
 
 
 def attack_one():
-    attack_in_success(4, 5)
+    attack_in_success(2, 4)
     time.sleep(3)
-    if not total_num() == 5:
+    if not total_num() == 6:
         escape_time_add_print()
         escape()
         return

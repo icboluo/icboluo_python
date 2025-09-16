@@ -8,6 +8,8 @@ class Pos:
 
     yolo = None
 
+    name_id_dict = None
+
     @staticmethod
     def win_position() -> list[int]:
         return [Pos.win_l, Pos.win_t, Pos.win_w, Pos.win_h]
@@ -17,7 +19,7 @@ class Pos:
         return Pos.win_l, Pos.win_t, Pos.win_w, Pos.win_h
 
     @staticmethod
-    def update_position(l, t, w, h) -> None:
+    def update_position(l: int, t: int, w: int, h: int) -> None:
         Pos.win_l = l
         Pos.win_t = t
         Pos.win_w = w

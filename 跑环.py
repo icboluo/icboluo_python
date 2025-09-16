@@ -197,7 +197,7 @@ def attack_chen_liu_ding_tao():
 
 if __name__ == '__main__':
     ini.init_information()
-    for i in range(10):
+    for i in range(100):
         attack_xu_chang_pan_jun()
         attack_xu_chang_xi_jiao()
         attack_xu_chang_cheng()
